@@ -1,0 +1,4 @@
+weaviate-client
+pandas
+requests
+tqdm
