@@ -2,3 +2,4 @@ weaviate-client
 pandas
 requests
 tqdm
+cohere
