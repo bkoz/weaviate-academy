@@ -163,9 +163,13 @@ try:
         print(f'{movies.batch.failed_objects = }')
 
     # Perform query
-    print("Query = dystopian future")
-    response = movies.query.near_text(
-        query="dystopian future", limit=5, return_metadata=wq.MetadataQuery(distance=True)
+    query_text = "dystopian future"
+    query_vector = vectorize(co, [query_text])[0]  # Get the vector for the query text
+    print(f"{query_text = }")
+    response = movies.query.near_vector(
+        limit=5, 
+        return_metadata=wq.MetadataQuery(distance=True),
+        near_vector=query_vector  # Use the custom vector for the query
     )
 
     # Inspect the response
@@ -195,7 +199,8 @@ try:
     # Hybrid Query
     print("Hybrid Query")
     response = movies.query.hybrid(
-        query="history", limit=5, return_metadata=wq.MetadataQuery(score=True)
+        query="history", limit=5, return_metadata=wq.MetadataQuery(score=True),
+        vector=query_vector  # Use the custom vector for the query
     )
 
     # Inspect the response
@@ -209,8 +214,8 @@ try:
 
     # Perform query
     print("Query using release_date filter")
-    response = movies.query.near_text(
-        query="dystopian future",
+    response = movies.query.near_vector(
+        near_vector=query_vector,  # Use the custom vector for the query
         limit=5,
         return_metadata=wq.MetadataQuery(distance=True),
         filters=wq.Filter.by_property("release_date").greater_than(datetime(2020, 1, 1))
@@ -228,8 +233,8 @@ try:
     # Single Prompt
     print("Single prompt query: Translate this into French")
 
-    response = movies.generate.near_text(
-        query="dystopian future",
+    response = movies.generate.near_vector(
+        near_vector=query_vector,  # Use the custom vector for the query
         limit=5,
         single_prompt="Translate this into French: {title}"
     )
@@ -241,8 +246,8 @@ try:
 
     # Generative Search
     print("Grouped task prompt query: What do these movies have in common?")
-    response = movies.generate.near_text(
-        query="dystopian future",
+    response = movies.generate.near_vector(
+        near_vector=query_vector,  # Use the custom vector for the query
         limit=5,
         grouped_task="What do these movies have in common?",
         # grouped_properties=["title", "overview"]  # Optional parameter; for reducing prompt length
