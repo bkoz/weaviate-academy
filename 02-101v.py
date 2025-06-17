@@ -1,6 +1,6 @@
 #
 # Weaviate Academy
-# Course: 101T - Working with text data
+# Course: 101V - BYO vectors
 #
 import weaviate
 from weaviate.classes.init import Auth
@@ -111,43 +111,11 @@ try:
     generative_config=wc.Configure.Generative.cohere()
     )
 
-    # Get the collection
-    movies = client.collections.get("MovieCustomVector")
-
-    # Enter context manager
-    with movies.batch.fixed_size(batch_size=200) as batch:
-        # Loop through the data
-        for i, movie in tqdm(df.iterrows()):
-            # Convert data types
-            # Convert a JSON date to `datetime` and add time zone information
-            release_date = datetime.strptime(movie["release_date"], "%Y-%m-%d").replace(
-                tzinfo=timezone.utc
-            )
-            # Convert a JSON array to a list of integers
-            genre_ids = json.loads(movie["genre_ids"])
-
-            # Build the object payload
-            movie_obj = {
-                "title": movie["title"],
-                "overview": movie["overview"],
-                "vote_average": movie["vote_average"],
-                "genre_ids": genre_ids,
-                "release_date": release_date,
-                "tmdb_id": movie["id"],
-            }
-
-            # Add object to batch queue
-            batch.add_object(
-                properties=movie_obj,
-                uuid=generate_uuid5(movie["id"])
-                # references=reference_obj  # You can add references here
-            )
-            # Batcher automatically sends batches
 
     # Load the embeddings (embeddings from the previous step)
-    embs_path = "https://raw.githubusercontent.com/weaviate-tutorials/edu-datasets/main/movies_data_1990_2024_embeddings.csv"
+    # embs_path = "https://raw.githubusercontent.com/weaviate-tutorials/edu-datasets/main/movies_data_1990_2024_embeddings.csv"
     # Or load embeddings from a local file (if you generated them earlier)
-    # embs_path = "scratch/movies_data_1990_2024_embeddings.csv"
+    embs_path = "scratch/movies_data_1990_2024_embeddings.csv"
 
     emb_df = pd.read_csv(embs_path)
 
