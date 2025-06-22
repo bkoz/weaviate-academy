@@ -1,6 +1,6 @@
 #
 # Weaviate Academy
-# Course: 101T - Working with text data
+# Course: 101M - Working with multi-modal data
 #
 import weaviate
 from weaviate.classes.init import Auth
