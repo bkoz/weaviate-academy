@@ -19,20 +19,15 @@ data_url = "https://raw.githubusercontent.com/weaviate-tutorials/edu-datasets/ma
 resp = requests.get(data_url)
 df = pd.DataFrame(resp.json())
 
-# 
-# Connect to the Weaviate Cloud Instance
-#
 headers = {
     "X-OpenAI-Api-Key": os.getenv("OPENAI_API_KEY")
 }
 
-client = weaviate.connect_to_weaviate_cloud(
-    cluster_url=os.getenv("WEAVIATE_URL"),  
-    auth_credentials=Auth.api_key(
-        os.getenv("WEAVIATE_API_KEY")
-    ),
-    headers=headers,
-)
+# 
+# Connect to a local Weaviate instance.
+#
+client = weaviate.connect_to_local(headers=headers)
+
 
 # Check Weaviate status
 try:
