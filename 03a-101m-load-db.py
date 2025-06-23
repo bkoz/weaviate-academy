@@ -20,7 +20,7 @@ resp = requests.get(data_url)
 df = pd.DataFrame(resp.json())
 
 # 
-# Connect to the Weaviate Cloud Instance
+# Connect to the Weaviate
 #
 headers = {
     "X-OpenAI-Api-Key": os.getenv("OPENAI_API_KEY")
