@@ -29,14 +29,19 @@ co = cohere.Client(co_token)
 # Connect to the Weaviate Cloud Instance
 #
 headers = {
-    "X-Cohere-Api-Key": os.getenv("COHERE_APIKEY")
+    "X-Cohere-Api-Key": os.getenv("COHERE_API_KEY")
 }
 
-client = weaviate.connect_to_weaviate_cloud(
-    cluster_url=os.getenv("WEAVIATE_URL"),  
-    auth_credentials=Auth.api_key(
-        os.getenv("WEAVIATE_API_KEY")
-    ),
+# client = weaviate.connect_to_weaviate_cloud(
+#     cluster_url=os.getenv("WEAVIATE_URL"),  
+#     auth_credentials=Auth.api_key(
+#         os.getenv("WEAVIATE_API_KEY")
+#     ),
+#     headers=headers,
+# )
+
+# Connect to the local Weaviate instance using the header defined above.
+client = weaviate.connect_to_local(
     headers=headers,
 )
 
